@@ -14,7 +14,3 @@ $$0 \to E(K)/nE(K) \to S^{(n)}(E/K) \to \text{Ш}(E/K)[n] \to 0$$
 Dove:
 * **$S^{(n)}(E/K)$** è il gruppo di Selmer, che è computabile localmente.
 * **$\text{Ш}(E/K)$** è il gruppo di Shafarevich-Tate, che contiene le ostruzioni al principio locale-globale.
-
-```bash
-# Esempio di esecuzione di un'analisi su una curva specifica
-sage scripts/analizza_curva.py --a_invs "[0,0,1,-1,0]"
