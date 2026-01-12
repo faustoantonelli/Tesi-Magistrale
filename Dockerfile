@@ -3,6 +3,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Installazione completa per tesi di Matematica
 RUN apt-get update && apt-get install -y \
+    texlive-font-utils \
     texlive-latex-base \
     texlive-latex-recommended \
     texlive-latex-extra \

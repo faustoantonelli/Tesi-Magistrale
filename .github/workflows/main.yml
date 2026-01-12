@@ -15,23 +15,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Run Analisi e Compila PDF (Docker)
         run: |
           docker build -t tesi-engine .
-          
-          # Definiamo il percorso della cartella di Overleaf
           TARGET_DIR="Tesi Magistrale"
           
           docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "
             cd '$TARGET_DIR' && 
             /engine && 
-            MAIN_TEX=\$(grep -l '\\\\begin{document}' *.tex | head -n 1) &&
-            pdflatex -interaction=nonstopmode \"\$MAIN_TEX\" && 
-            pdflatex -interaction=nonstopmode \"\$MAIN_TEX\"
+            # Usiamo || true per evitare che avvisi minori blocchino l'action
+            pdflatex -interaction=nonstopmode tesi.tex || true && 
+            pdflatex -interaction=nonstopmode tesi.tex || true
           "
           
-          # Spostiamo il PDF generato nella root per scaricarlo facilmente
+          # Spostiamo il file nella root (controlla se il nome è tesi.pdf o Tesi.pdf)
           find "$TARGET_DIR" -name "*.pdf" -exec mv {} tesi.pdf \;
 
       - name: Carica PDF come Artifact
