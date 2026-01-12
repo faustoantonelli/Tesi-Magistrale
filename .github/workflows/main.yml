@@ -1,0 +1,41 @@
+name: Revisione e Compilazione Tesi
+on:
+  push:
+    paths:
+      - '**.tex'
+      - '**.bib'
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build-tesi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Analisi (Docker)
+        run: |
+          docker build -t tesi-engine .
+          docker run -v ${{ github.workspace }}:/app tesi-engine
+
+      - name: Compila PDF
+        run: |
+          # Compila 2 volte per riferimenti e citazioni
+          pdflatex -interaction=nonstopmode tesi.tex
+          pdflatex -interaction=nonstopmode tesi.tex
+
+      - name: Carica PDF come Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tesi-PDF-Pronta
+          path: tesi.pdf
+
+      - name: Deploy Report to Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
