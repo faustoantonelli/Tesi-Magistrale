@@ -1,7 +1,9 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Installazione strumenti
 RUN apt-get update && apt-get install -y \
+    texlive-latex-base \
     texlive-latex-extra \
     texlive-lang-italian \
     texlive-fonts-recommended \
@@ -9,11 +11,13 @@ RUN apt-get update && apt-get install -y \
     aspell \
     aspell-it \
     g++ \
-    grep \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /build
 COPY tester.cpp .
-RUN g++ tester.cpp -o engine
+# Compiliamo l'engine e lo mettiamo nella radice / (fuori da /app)
+RUN g++ -O3 tester.cpp -o /engine
 
-CMD ["./engine"]
+WORKDIR /app
+# Eseguiamo l'engine puntando al percorso assoluto
+CMD ["/engine"]

@@ -11,7 +11,7 @@ struct Result { string id, stato, dettagli; };
 class LatexTester {
 public:
     string file_tex = "tesi.tex";
-    string file_bib = "references.bib";
+    string file_bib = "refs.bib";
     vector<Result> risultati;
 
     void check_syntax() {
