@@ -1,0 +1,53 @@
+\chapter{Strumenti}
+I nostri principali oggetti di studio sono le curve ellittiche, ovvero curve di genere uno\footnote{Il genere di una superficie viene definito come il numero più grande di curve semplici chiuse disgiunte che possono essere disegnate sulla superficie senza separarla in due componenti connesse distinte.} aventi un punto base specificato.
+Ogni curva di questo tipo pu\`o essere scritta come il luogo in $\mathbb{P}^2$ di un'equazione cubica con un solo punto, il punto base, sulla retta all'$\infty$.\\
+(grafico di una cubica in $\mathbb{P}^2$ che tocca la retta all'infinito in un solo punto)\\
+Quindi, dopo aver scalato appropriatamente $X$ e $Y$, una curva ellittica ha un'equazione della forma
+$$
+Y^2Z + a_1XYZ + a_3YZ^2 = X^3 + a_2X^2Z + a_4XZ^2 + a_6Z^3.
+$$
+Qui $O = [0,1,0]$ \`e il punto base e $a_1,\dots,a_6 \in \bar{K}$.
+In questa sezione e nella prossima, studiamo le curve date da tali equazioni di Weierstrass, usando formule esplicite quanto pi\`u possibile per evitare il ricorso a una teoria generale.\\
+\\
+\noindent
+Per semplificare la notazione, scriviamo generalmente l'equazione di Weierstrass per la nostra curva ellittica usando coordinate non omogenee $x = X/Z$ e $y= Y/Z$,
+$$
+E : y^2 + a_1xy + a_3y = x^3 + a_2x^2 + a_4x + a_6,
+$$
+ricordando sempre che c'è un punto extra $O = [0,1,0]$ all'infinito. Come al solito, se $a_1,\dots,a_6 \in K$, allora si dice che $E$ \`e definita su $K$, $E(K)$.\\
+Se char$(\bar{K}) \neq 2$ possiamo semplificare nuovamente la scrittura completando il quadrato.
+Sostituendo
+$$
+y \mapsto \frac{1}{2}(y - a_1x - a_3)
+$$
+otteniamo un'equazione della forma
+$$
+E : y^2 = 4x^3 + b_2x^2 + 2b_4x + b_6,
+$$
+dove
+$$
+b_2 = a_1^2 + 4a_2, \quad b_4 = 2a_4 + a_1a_3, \quad b_6 = a_3^2 + 4a_6.
+$$
+Definiamo inoltre le quantità:\\
+\\
+(Definire $j$: $j-$invariante, $\omega$: invariante differenziale e $\Delta$: discriminante)\\
+\\
+Consideriamo ora un punto $P = (x_0, y_0)$ che soddisfa l'equazione di Weierstrass della curva $E(K)$ e assumiamo che $P$ sia singolare.
+
+$$
+\frac{\partial f}{\partial x}(P) = \frac{\partial f}{\partial y}(P) = 0.
+$$
+
+Segue che esistono $\alpha, \beta \in \bar{K}$ tali che l'espansione di Taylor di $f(x,y)$ in $P$ sia della forma:
+
+$$
+f(x,y) - f(x_0, y_0) = \left[ (y - y_0) - \alpha(x - x_0) \right] \left[ (y - y_0) - \beta(x - x_0) \right] - (x - x_0)^3.
+$$
+
+\begin{definition}
+    \begin{itemize}
+    .\\
+        \item cuspide
+        \item nodo
+    \end{itemize}
+\end{definition}

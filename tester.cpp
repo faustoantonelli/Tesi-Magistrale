@@ -10,9 +10,25 @@ struct Result { string id, stato, dettagli; };
 
 class LatexTester {
 public:
-    string file_tex = "tesi.tex";
-    string file_bib = "refs.bib";
+    // Rimuoviamo i nomi fissi e cerchiamo i file dinamicamente
+    string file_tex;
+    string file_bib;
     vector<Result> risultati;
+
+    void detect_files() {
+        // Trova il primo file .tex che contiene \begin{document}
+        system("grep -l '\\\\begin{document}' *.tex > main_found.txt");
+        ifstream f1("main_found.txt");
+        f1 >> file_tex;
+
+        // Trova il primo file .bib disponibile
+        system("ls *.bib > bib_found.txt");
+        ifstream f2("bib_found.txt");
+        f2 >> file_bib;
+        
+        if(file_tex.empty()) file_tex = "main.tex"; // fallback
+        if(file_bib.empty()) file_bib = "refs.bib"; // fallback
+    }
 
     void check_syntax() {
         system(("chktex -q -n1 -n3 '" + file_tex + "' > syntax.txt").c_str());
