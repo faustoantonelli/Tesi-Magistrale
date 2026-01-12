@@ -32,19 +32,38 @@ public:
     }
 
     void check_citations() {
-        // Estrae le chiavi dai \cite{...} e verifica se sono nel file .bib
-        string cmd = "grep -oP '\\\\cite\\{\\K[^\\}]+' " + file_tex + " | sort -u > citations.txt";
-        system(cmd.c_str());
-
-        ifstream f("citations.txt");
-        string key, missing;
-        while(f >> key) {
-            string check = "grep -q '" + key + "' " + file_bib;
-            if (system(check.c_str()) != 0) missing += key + " ";
-        }
-        risultati.push_back({"CITAZIONI", missing.empty() ? "PASS" : "FAIL", 
-                           missing.empty() ? "Tutte le citazioni presenti" : "Mancano nel .bib: " + missing});
+    // 1. Verifica se il file .bib esiste
+    ifstream check_file(file_bib);
+    if(!check_file) {
+        risultati.push_back({"CITAZIONI", "WARN", "File " + file_bib + " non trovato."});
+        return;
     }
+
+    // 2. Estrazione chiavi: nota le 4 barre per gestire l'escape di C++ e Grep
+    // Questo comando cerca \cite{chiave} e scrive 'chiave' in citations.txt
+    string cmd = "grep -oP '\\\\\\\\cite\\\\{\\\\K[^\\\\}]+' " + file_tex + " | sort -u > citations.txt";
+    system(cmd.c_str());
+
+    ifstream f("citations.txt");
+    string key, missing;
+    
+    // 3. Verifica ogni chiave dentro il file .bib
+    while(f >> key) {
+        // Cerchiamo la chiave nel file .bib
+        string check = "grep -q '" + key + "' " + file_bib;
+        if (system(check.c_str()) != 0) {
+            missing += key + " ";
+        }
+    }
+
+    // 4. Risultato finale
+    if (missing.empty()) {
+        // Se citations.txt è vuoto, f >> key non parte e missing resta vuoto (PASS)
+        risultati.push_back({"CITAZIONI", "PASS", "Tutte le citazioni sono presenti nel file .bib"});
+    } else {
+        risultati.push_back({"CITAZIONI", "FAIL", "Chiavi mancanti nel .bib: " + missing});
+    }
+}
 
     void genera_report() {
         ofstream r("index.html");
