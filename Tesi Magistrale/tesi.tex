@@ -1,0 +1,36 @@
+\documentclass[11pt]{book}
+%\usepackage{stile/normalthm}
+\usepackage{stile/fancythm}
+\usepackage{stile/fancystyle}
+\usepackage{abbrev}
+\usepackage{yfonts}
+
+\title{\textbf{Tesi Triennale}}
+\author{Nome Cognome}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+
+\include{chapters/frontespizio}  % Frontespizio
+\tableofcontents
+
+\include{chapters/abstract}      % Abstract
+\include{chapters/introduzione}  % Introduzione
+
+\mainmatter
+
+
+\include{chapters/chapter1}      % Capitolo 2
+\include{chapters/chapter2}      % Capitolo 3
+\include{chapters/chapter3}      % Capitolo 4
+\include{chapters/chapter4}      % Capitolo 1
+%\include{chapters/chapter5}      % Capitolo 5
+
+\appendix
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{bibliography/refs.bib}
+\include{chapters/ringraziamenti}
+\end{document}
