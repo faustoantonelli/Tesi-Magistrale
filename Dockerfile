@@ -1,12 +1,14 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installazione strumenti
+# Installazione strumenti completa per Tesi Matematica
 RUN apt-get update && apt-get install -y \
     texlive-latex-base \
+    texlive-latex-recommended \
     texlive-latex-extra \
-    texlive-lang-italian \
     texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-lang-italian \
     chktex \
     aspell \
     aspell-it \
