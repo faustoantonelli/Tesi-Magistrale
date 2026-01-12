@@ -16,16 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Analisi (Docker)
+      - name: Run Analisi e Compila PDF (Docker)
         run: |
           docker build -t tesi-engine .
-          docker run -v ${{ github.workspace }}:/app tesi-engine
+          # Eseguiamo sia l'engine (per i test) che pdflatex dentro il container
+          docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "/engine && pdflatex -interaction=nonstopmode tesi.tex && pdflatex -interaction=nonstopmode tesi.tex"
 
-      - name: Compila PDF
-        run: |
-          # Compila 2 volte per riferimenti e citazioni
-          pdflatex -interaction=nonstopmode tesi.tex
-          pdflatex -interaction=nonstopmode tesi.tex
+      - name: Carica PDF come Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tesi-PDF-Pronta
+          path: tesi.pdf
 
       - name: Carica PDF come Artifact
         uses: actions/upload-artifact@v4
