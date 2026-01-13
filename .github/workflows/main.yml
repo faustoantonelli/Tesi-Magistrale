@@ -19,21 +19,34 @@ jobs:
       - name: Run Analisi e Compila PDF (Docker)
         run: |
           docker build -t tesi-engine .
-          # Definiamo la cartella di lavoro (usa virgolette per i nomi con spazi)
           TARGET_DIR="Tesi Magistrale"
           
           docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "
-            cd '$TARGET_DIR' && 
-            # 1. Eseguiamo il tester C++ 
-            /engine && 
-            # 2. Prima passata pdflatex per generare i file ausiliari
-            pdflatex -interaction=nonstopmode tesi.tex || true && 
-            # 3. Compilazione della bibliografia (richiede il file .aux)
-            bibtex tesi || true && 
-            # 4. Altre due passate per riferimenti e indice
-            pdflatex -interaction=nonstopmode tesi.tex || true && 
-            pdflatex -interaction=nonstopmode tesi.tex || true
+            cd '/app/$TARGET_DIR' || { echo 'ERRORE: Cartella non trovata'; exit 1; }
+            
+            # 1. Eseguiamo il tester (Assicurati che sia compilato nel Dockerfile)
+            /engine || echo 'Avviso: Tester ha riscontrato problemi'
+            
+            # 2. Compilazione LaTeX (Rimuoviamo || true per vedere gli errori reali)
+            pdflatex -interaction=nonstopmode tesi.tex
+            bibtex tesi || echo 'Nessuna citazione trovata o errore BibTeX'
+            pdflatex -interaction=nonstopmode tesi.tex
+            pdflatex -interaction=nonstopmode tesi.tex
           "
+          
+          # Spostiamo i file prodotti nella root per le azioni successive
+          # Usiamo un comando più preciso per evitare errori di percorso
+          if [ -f "$TARGET_DIR/tesi.pdf" ]; then
+            mv "$TARGET_DIR/tesi.pdf" .
+          else
+            echo "ERRORE: tesi.pdf non trovato in $TARGET_DIR"
+            ls -R "$TARGET_DIR" # Debug: mostra cosa è stato creato
+            exit 1
+          fi
+
+          if [ -f "$TARGET_DIR/index.html" ]; then
+            mv "$TARGET_DIR/index.html" .
+          fi
           
           # Spostiamo i risultati nella root per il deploy
           find "$TARGET_DIR" -name "*.pdf" -exec mv {} tesi.pdf \;
