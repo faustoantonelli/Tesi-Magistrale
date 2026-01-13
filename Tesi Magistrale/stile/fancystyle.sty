@@ -1,0 +1,33 @@
+\ProvidesPackage{stile/fancystyle}
+
+\usepackage{emptypage}              % Pagine vuote non numerate
+\usepackage{fancyhdr}               % Headers fighi
+\usepackage[Lenny]{fncychap}        % Capitoli fighi
+    \ChTitleVar{\Huge\bfseries}
+\usepackage{titlesec}
+
+% Stile delle sezioni: linea di separazione
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
+
+% Nuovo stile di header/footer
+\pagestyle{fancy}
+	\fancyhead[L]{\leftmark}
+	\fancyhead[LO,RE]{\nouppercase{\textsl{\rightmark}}}
+	\fancyhead[C]{}
+	\fancyhead[LE,RO]{\bfseries\nouppercase{\textsl{\leftmark}}}
+	\fancyfoot[LE,RO]{\thepage}
+	\fancyfoot[C]{}
+	\fancyfoot[LO,RE]{}
+	%Font in head/foot
+	\renewcommand{\chaptermark}[1]{\markboth{\bfseries \thechapter.\ #1}{}}
+	\renewcommand{\sectionmark}[1]{\markright{#1}}
+	%Linee in Header e Footer
+	\renewcommand{\headrulewidth}{0.05pt}
+	\renewcommand{\footrulewidth}{0.05pt}
+	\renewcommand{\footnoterule}
+	{\kern 0pt	\hrule width \textwidth height 0.5pt	\kern 5pt}
+	%Numeri pagina in prima pagina capitoli
+	\makeatletter
+	\let\ps@plain\ps@empty
+	\makeatother

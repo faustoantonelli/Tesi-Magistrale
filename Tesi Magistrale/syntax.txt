@@ -1,0 +1,36 @@
+Warning 26 in chapters/frontespizio.tex line 17: You ought to remove spaces in front of punctuation.
+    {\LARGE{\bf .}}  
+               ^
+Warning 45 in chapters/chapter1.tex line 6: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 14: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 20: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 24: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 28: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 37: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 45 in chapters/chapter1.tex line 42: Use \[ ... \] instead of $$ ... $$.
+$$  
+^^^^^^
+Warning 26 in chapters/chapter1.tex line 48: You ought to remove spaces in front of punctuation.
+    .\\  
+   ^
+Warning 27 in main.tex line 26: Could not execute LaTeX command.
+\include{chapters/chapter2}      % Capitolo 3  
+^^^^^^^^
+Warning 27 in main.tex line 27: Could not execute LaTeX command.
+\include{chapters/chapter3}      % Capitolo 4  
+^^^^^^^^
+Warning 27 in main.tex line 28: Could not execute LaTeX command.
+\include{chapters/chapter4}      % Capitolo 1  
+^^^^^^^^
