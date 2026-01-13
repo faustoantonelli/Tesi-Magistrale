@@ -16,19 +16,14 @@ public:
     vector<Result> risultati;
 
     void detect_files() {
-        // Trova il primo file .tex che contiene \begin{document}
-        system("grep -l '\\\\begin{document}' *.tex > main_found.txt");
-        ifstream f1("main_found.txt");
-        f1 >> file_tex;
+    system("grep -l '\\\\begin{document}' *.tex > main_found.txt");
+    ifstream f1("main_found.txt");
+    if (!(f1 >> file_tex)) file_tex = "tesi.tex"; // Forza il nome se grep fallisce
 
-        // Trova il primo file .bib disponibile
-        system("ls *.bib > bib_found.txt");
-        ifstream f2("bib_found.txt");
-        f2 >> file_bib;
-        
-        if(file_tex.empty()) file_tex = "main.tex"; // fallback
-        if(file_bib.empty()) file_bib = "refs.bib"; // fallback
-    }
+    system("find . -name '*.bib' > bib_found.txt"); // Cerca anche in sottocartelle
+    ifstream f2("bib_found.txt");
+    if (!(f2 >> file_bib)) file_bib = "bibliography/refs.bib";
+}
 
     void check_syntax() {
         system(("chktex -q -n1 -n3 '" + file_tex + "' > syntax.txt").c_str());
@@ -96,6 +91,7 @@ public:
 
 int main() {
     LatexTester t;
+    t.detect_files();
     t.check_syntax();
     t.check_spelling();
     t.check_citations();

@@ -19,25 +19,26 @@ jobs:
       - name: Run Analisi e Compila PDF (Docker)
         run: |
           docker build -t tesi-engine .
+          # Definiamo la cartella di lavoro (usa virgolette per i nomi con spazi)
           TARGET_DIR="Tesi Magistrale"
           
           docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "
             cd '$TARGET_DIR' && 
+            # 1. Eseguiamo il tester C++ 
             /engine && 
-            # Usiamo || true per evitare che avvisi minori blocchino l'action
+            # 2. Prima passata pdflatex per generare i file ausiliari
+            pdflatex -interaction=nonstopmode tesi.tex || true && 
+            # 3. Compilazione della bibliografia (richiede il file .aux)
+            bibtex tesi || true && 
+            # 4. Altre due passate per riferimenti e indice
             pdflatex -interaction=nonstopmode tesi.tex || true && 
             pdflatex -interaction=nonstopmode tesi.tex || true
           "
           
-          # Spostiamo il file nella root (controlla se il nome è tesi.pdf o Tesi.pdf)
+          # Spostiamo i risultati nella root per il deploy
           find "$TARGET_DIR" -name "*.pdf" -exec mv {} tesi.pdf \;
+          mv "$TARGET_DIR/index.html" .
 
-      - name: Carica PDF come Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Tesi-PDF-Pronta
-          path: tesi.pdf
-    
       - name: Carica PDF come Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -49,9 +50,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
-          # Specifichiamo di includere solo il report per non sporcare Pages
+          # Escludiamo i file sorgente dal sito web pubblico
           exclude_assets: |
             *.tex
             *.cpp
             Dockerfile
             *.bib
+            main_found.txt
+            bib_found.txt
+            typos.txt
+            syntax.txt
+            citations.txt
