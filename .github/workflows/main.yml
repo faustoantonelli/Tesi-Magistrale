@@ -1,32 +1,26 @@
-name: Revisione e Compilazione Tesi
+name: Revisione Tesi
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: write
-  pages: write
-
 jobs:
   build-tesi:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Analisi Tesi
         run: |
           docker build -t tesi-engine .
-          
-          # Avviamo il container. 
-          # 1. Montiamo la cartella di lavoro
-          # 2. Entriamo nella sottocartella corretta
-          # 3. Lanciamo il tester (/engine)
-          
+
+          # Eseguiamo il container
+          # -v monta la cartella di GitHub nel container
+          # cd entra nella cartella della tesi (gestendo lo spazio nel nome)
+          # /engine lancia il tuo programma C++
           docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "
-            cd \"/app/Tesi Magistrale\" || { echo 'Cartella non trovata'; exit 1; }
+            cd \"/app/Tesi Magistrale\" || { echo 'Errore: Cartella Tesi Magistrale non trovata'; exit 1; }
             /engine
           "
             # 1. Eseguiamo il tester (Assicurati che sia compilato nel Dockerfile)

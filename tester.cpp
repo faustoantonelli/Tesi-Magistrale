@@ -31,15 +31,20 @@ public:
     }
 
     void check_spelling() {
-        // Aspell estrae i refusi ignorando i comandi LaTeX
         string cmd = "cat " + file_tex + " | aspell list -t -l it | sort -u > typos.txt";
         system(cmd.c_str());
         
         ifstream f("typos.txt");
-        string word, all;
-        while(f >> word) all += word + " ";
-        risultati.push_back({"ORTOGRAFIA", all.empty() ? "PASS" : "WARN", 
-                           all.empty() ? "Nessun errore" : "Refusi trovati: " + all});
+        string word, all_typos;
+        while(f >> word) {
+            all_typos += word + " ";
+        } 
+
+        if (all_typos.empty()) {
+            risultati.push_back({"ORTOGRAFIA", "PASS", "Nessun refuso trovato."});
+        } else {
+            risultati.push_back({"ORTOGRAFIA", "WARN", "Possibili refusi: " + all_typos});
+        }
     }
 
     void check_citations() {
@@ -86,6 +91,7 @@ public:
         cout << "   Dettagli: " << res.dettagli << endl;
         cout << string(60, '-') << endl;
     }
+}
 };
 
 int main() {
