@@ -1,15 +1,8 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installazione completa per tesi di Matematica
 RUN apt-get update && apt-get install -y \
-    texlive-font-utils \
-    texlive-latex-base \
-    texlive-latex-recommended \
     texlive-latex-extra \
-    texlive-fonts-recommended \
-    texlive-fonts-extra \
-    texlive-science \
     texlive-lang-italian \
     chktex \
     aspell \
@@ -20,6 +13,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /build
 COPY tester.cpp .
 RUN g++ -O3 tester.cpp -o /engine
+# Rendiamo il binario eseguibile ovunque
+RUN chmod +x /engine
 
 WORKDIR /app
 CMD ["/engine"]

@@ -1,9 +1,8 @@
 name: Revisione e Compilazione Tesi
 on:
   push:
-    paths:
-      - '**.tex'
-      - '**.bib'
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -13,17 +12,23 @@ jobs:
   build-tesi:
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Analisi e Compila PDF (Docker)
+      - name: Analisi Tesi
         run: |
           docker build -t tesi-engine .
-          TARGET_DIR="Tesi Magistrale"
+          
+          # Avviamo il container. 
+          # 1. Montiamo la cartella di lavoro
+          # 2. Entriamo nella sottocartella corretta
+          # 3. Lanciamo il tester (/engine)
           
           docker run -v ${{ github.workspace }}:/app tesi-engine sh -c "
-            cd '/app/$TARGET_DIR' || { echo 'ERRORE: Cartella non trovata'; exit 1; }
-            
+            cd \"/app/Tesi Magistrale\" || { echo 'Cartella non trovata'; exit 1; }
+            /engine
+          "
             # 1. Eseguiamo il tester (Assicurati che sia compilato nel Dockerfile)
             /engine || echo 'Avviso: Tester ha riscontrato problemi'
             

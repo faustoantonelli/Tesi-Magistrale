@@ -77,15 +77,14 @@ public:
 }
 
     void genera_report() {
-        ofstream r("index.html");
-        r << "<html><body style='font-family:sans-serif; background:#f4f4f4; padding:20px;'>";
-        r << "<h1>📝 Report Revisione Tesi</h1><table border='1' style='width:100%; background:white;'>";
-        for(auto &res : risultati) {
-            string color = (res.stato == "PASS") ? "green" : (res.stato == "FAIL") ? "red" : "orange";
-            r << "<tr><td><b>" << res.id << "</b></td><td style='color:" << color << "'>" << res.stato 
-              << "</td><td>" << res.dettagli << "</td></tr>";
-        }
-        r << "</table></body></html>";
+    cout << "\n" << string(60, '=') << endl;
+    cout << "           RISULTATI REVISIONE TESI" << endl;
+    cout << string(60, '=') << endl;
+    for(auto &res : risultati) {
+        string icona = (res.stato == "PASS") ? "✅" : (res.stato == "FAIL") ? "❌" : "⚠️";
+        cout << icona << " [" << res.id << "] " << res.stato << endl;
+        cout << "   Dettagli: " << res.dettagli << endl;
+        cout << string(60, '-') << endl;
     }
 };
 
