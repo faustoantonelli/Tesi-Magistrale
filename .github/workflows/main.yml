@@ -23,6 +23,11 @@ jobs:
             cd \"/app/Tesi Magistrale\" || { echo 'Errore: Cartella Tesi Magistrale non trovata'; exit 1; }
             /engine
           "
+          echo '--- INIZIO TEST ---'
+            /engine
+            echo '--- FINE TEST ---'
+          "
+
             # 1. Eseguiamo il tester (Assicurati che sia compilato nel Dockerfile)
             /engine || echo 'Avviso: Tester ha riscontrato problemi'
             
